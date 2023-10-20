@@ -25,18 +25,18 @@ apt update
 apt upgrade -y
 apt install -y vim curl wget git htop # chores
 
-apt install -y wayland xwayland sway swaybg swayidle waybar # Sway
-apt install -y kitty wofi mc grimshot nautilus light wdisplays xdg-desktop-portal-wlr lm_sensors # Sway apps
-apt install -y libxkbcommon cairo pam # swaylock-effects runtime deps
+apt install -y xwayland sway swaybg swayidle waybar # Sway
+apt install -y kitty wofi mc grimshot nautilus light wdisplays xdg-desktop-portal-wlr lm-sensors # Sway apps
+apt install -y libxkbcommon-x11-0 libcairo2 libpam0g # swaylock-effects runtime deps
 apt install -y meson wayland-protocols # swaylock-effects compiletime deps
-apt install -y python-i3ipc # autotiling
+apt install -y python3-i3ipc # autotiling
 apt install -y fontconfig
 
-apt install -y NetworkManager NetworkManager-tui # NetworkManager
+apt install -y network-manager # NetworkManager
 apt install -y pipewire{,-pulse,-alsa,-jack,-audio} libspa-0.2-bluetooth wireplumber pavucontrol # pipewire
 apt install -y python3-{pip,dbus} # eduroam
-apt install -y qemu virt-manager spice-server # QEMU virtualisation
-apt install -y make gcc pam-devel libxcb-devel # ly
+apt install -y virt-manager qemu-{utils,system-x86,system-gui} libspice-server1 # QEMU virtualisation
+apt install -y make gcc libpam0g-dev libxcb1-dev # ly
 
 
 # Build Swaylock-effects
