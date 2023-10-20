@@ -12,7 +12,8 @@ Tested on **Debian 12 (bookworm)**.
 - Install git: `sudo apt install git`
 - Clone branch: `git clone https://github.com/misijan1cz/debian-sway-config`
 - Go to the cloned directory: `cd debian-sway-config`
-- Run install script as root: `sudo su` and `./install.sh`
+- Change used username in `install.sh`
+- Run install script as root: `sudo su` and `bash install.sh`
 
 ## Reminder
 
