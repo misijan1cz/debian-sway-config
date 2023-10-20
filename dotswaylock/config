@@ -1,0 +1,17 @@
+#swaylock-effects
+#file on path: ~/.swaylock/config
+
+indicator
+clock
+effect-blur=15x15
+#screenshots
+image=$HOME/.config/wallpaper_720.jpg
+key-hl-color=49548a
+bs-hl-color=f38ba8
+ring-color=89b4fa
+ring-clear-color=fab387
+inside-clear-color=f9e2af
+inside-color=89b4fa
+text-color=000000
+ring-ver-color=49549a
+inside-ver-color=89b4fa
