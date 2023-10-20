@@ -69,8 +69,14 @@ cd ..
 curl -fsSL https://tailscale.com/install.sh | sh
 
 
+# Set interfaces as managed by NetworkManager
+mv /etc/NetworkManager/NetworkManager.conf /etc/NetworkManager/NetworkManager.conf.bak
+cp NetworkManafer.conf /etc/NetworkManager/NetworkManager.conf
+
+
 # Enable services
 systemctl enable --now NetworkManager
+systemctl restart NetworkManager
 systemctl enable --now libvirtd 	# QEMU virtualisation
 systemctl enable ly 			# ly ("animate" at /etc/ly/config.ini)
 systemctl disable getty@tty2.service	# ly to work
@@ -82,8 +88,8 @@ fc-cache -vf
 
 # Configure eduroam
 pip3 install distro
-curl 'https://cat.eduroam.org/user/API.php?action=downloadInstaller&lang=en&profile=1070&device=linux&generatedfor=user&openroaming=0' > eduroam-Charles-University.py
-python3 eduroam-Charles-University.py
+curl 'https://cat.eduroam.org/user/API.php?action=downloadInstaller&lang=en&profile=1070&device=linux&generatedfor=user&openroaming=0' > eduroam-cuni.py
+cp eduroam-cuni.py ../eduroam-cuni.py
 
 
 # Change target to GUI
