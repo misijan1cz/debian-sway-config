@@ -1,5 +1,6 @@
 #!/bin/bash
 
+username="mj"
 
 # Check for ROOT user
 if [[ $EUID -ne 0 ]]; then
@@ -15,10 +16,10 @@ cp sources.list /etc/apt/sources.list
 mkdir -p /home/$username/.config
 mkdir -p /home/$username/.local
 mkdir -p /home/$username/.swaylock
-cp -r dotconfig/* $HOME/.config/
-cp -r dotlocal/* $HOME/.local/
-cp -r dotswaylock/* $HOME/.swaylock/
-cp dotvimrc $HOME/.vimrc
+cp -r dotconfig/* /home/$username/.config/
+cp -r dotlocal/* /home/$username/.local/
+cp -r dotswaylock/* /home/$username/.swaylock/
+cp dotvimrc /home/$username/.vimrc
 
 # Get all necessary packages
 apt update
@@ -26,7 +27,7 @@ apt upgrade -y
 apt install -y vim curl wget git htop # chores
 
 apt install -y xwayland sway swaybg swayidle waybar # Sway
-apt install -y kitty wofi mc grimshot nautilus light wdisplays xdg-desktop-portal-wlr lm-sensors # Sway apps
+apt install -y kitty wofi mc grimshot nautilus light wdisplays xdg-desktop-portal-wlr lm-sensors firefox # Sway apps
 apt install -y libxkbcommon-x11-0 libcairo2 libpam0g # swaylock-effects runtime deps
 apt install -y meson wayland-protocols # swaylock-effects compiletime deps
 apt install -y python3-i3ipc # autotiling
