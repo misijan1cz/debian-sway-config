@@ -1,7 +1,7 @@
 # debian-sway-config
 
-Functional Debian Sway desktop configuration.   
-Tested on **Debian 12 (bookworm)**.
+Debian Sway desktop configuration.   
+Last tested on **Debian unstable (Sid)** on 21.10.2023.
 
 ## Usage
 

@@ -40,8 +40,9 @@ apt install -y swaylock # swaylock (OR swaylock-effects)
 apt install -y network-manager bluetooth bluez # bluetooth and network
 apt install -y pipewire{,-pulse,-alsa,-jack,-audio} libspa-0.2-bluetooth wireplumber pavucontrol # audio (pipewire)
 apt install -y python3-{pip,dbus} # eduroam
+apt install -y power-profiles-daemon # Power Profiles
 apt install -y virt-manager qemu-{utils,system-x86,system-gui} libspice-server1 # QEMU virtualisation
-apt install -y make gcc libpam0g-dev libxcb1-dev # ly greeter
+apt install -y make gcc libpam0g-dev libxcb1-dev # ly greeter dependencies
 
 
 ## Build Swaylock-effects
@@ -86,6 +87,11 @@ systemctl enable ly 			# ly ("animate" at /etc/ly/config.ini)
 systemctl disable getty@tty2.service	# ly
 systemctl enable tailscaled		# already active, but whatever
 systemctl enable bluetooth		# bluetooth
+systemctl enable --now power-profiles-daemon # power profiles
+
+
+# Set power-saver profile
+powerprofilesctl set power-saver
 
 
 # Update fonts
