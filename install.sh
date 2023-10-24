@@ -25,24 +25,25 @@ cp dotvimrc /home/$username/.vimrc
 apt update
 apt upgrade -y
 apt install -y vim
-apt install -y git gh curl wget # user-defined programs
+apt install -y git gh curl wget 			# user-defined programs
 
-apt install -y xwayland sway swaybg swayidle waybar # Sway
+apt install -y xwayland sway swaybg swayidle waybar 	# Sway
 apt install -y kitty wofi mc grimshot nautilus light wdisplays xdg-desktop-portal-wlr lm-sensors firefox # preconfigured Sway apps (optional)
-apt install -y python3-i3ipc # autotiling
-apt install -y fontconfig # additional fonts
+apt install -y python3-i3ipc 				# autotiling
+apt install -y fontconfig 				# additional fonts
 
-apt install -y swaylock # swaylock (OR swaylock-effects)
-#apt install -y libxkbcommon-x11-0 libcairo2 libpam0g # swaylock-effects runtime deps
-#apt install -y meson wayland-protocols # swaylock-effects compiletime deps
+apt install -y swaylock 				# swaylock (OR swaylock-effects)
+#apt install -y libxkbcommon-x11-0 libcairo2 libpam0g 	# swaylock-effects runtime deps
+#apt install -y meson wayland-protocols 		# swaylock-effects compiletime deps
 # WARNING: swaylock-effects is dependent on wayland-client.h library. Not found in Sid on 20.10.2023. :/
 
-apt install -y network-manager bluetooth bluez # bluetooth and network
+apt install -y network-manager bluetooth bluez 		# bluetooth and network
+apt install -y ufw					# system security
 apt install -y pipewire{,-pulse,-alsa,-jack,-audio} libspa-0.2-bluetooth wireplumber pavucontrol # audio (pipewire)
-apt install -y python3-{pip,dbus} # eduroam
-apt install -y power-profiles-daemon # Power Profiles
+apt install -y python3-{pip,dbus} 			# eduroam
+apt install -y power-profiles-daemon 			# Power Profiles
 apt install -y virt-manager qemu-{utils,system-x86,system-gui} libspice-server1 # QEMU virtualisation
-apt install -y make gcc libpam0g-dev libxcb1-dev # ly greeter dependencies
+apt install -y make gcc libpam0g-dev libxcb1-dev 	# ly greeter dependencies
 
 
 ## Build Swaylock-effects
@@ -82,6 +83,7 @@ cp NetworkManafer.conf /etc/NetworkManager/NetworkManager.conf
 # Enable services
 systemctl disable wpa_supplicant		# NetworkManager
 systemctl enable NetworkManager
+ufw enable					# firewall
 systemctl enable libvirtd 			# QEMU virtualisation
 systemctl enable ly 				# ly ("animate" at /etc/ly/config.ini)
 systemctl disable getty@tty2.service
