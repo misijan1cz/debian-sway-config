@@ -32,6 +32,10 @@ exec swayidle -w \
          # \
          before-sleep 'swaylock'
 
+# This will lock your screen after 300 seconds of inactivity, then turn off
+# your displays after another 300 seconds, and turn your screens back on when
+# resumed. It will also lock your screen before your computer goes to sleep.
+
 # Scratchpad on boot
 exec $fav_scp
 for_window [title="index_term"] move scratchpad, resize set 1280 720
@@ -65,10 +69,6 @@ bindsym $mod+XF86WLAN exec kitty nmtui
 bindsym $mod+XF86Messenger exec nautilus
 bindsym $mod+XF86Favorites exec $vm-windows
 
-#
-# This will lock your screen after 300 seconds of inactivity, then turn off
-# your displays after another 300 seconds, and turn your screens back on when
-# resumed. It will also lock your screen before your computer goes to sleep.
 
 ### Input configuration
 #
