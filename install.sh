@@ -25,7 +25,7 @@ cp dotvimrc /home/$username/.vimrc
 apt update
 apt upgrade -y
 apt install -y vim
-apt install -y git curl wget # user-defined programs
+apt install -y git gh curl wget # user-defined programs
 
 apt install -y xwayland sway swaybg swayidle waybar # Sway
 apt install -y kitty wofi mc grimshot nautilus light wdisplays xdg-desktop-portal-wlr lm-sensors firefox # preconfigured Sway apps (optional)
@@ -80,14 +80,14 @@ cp NetworkManafer.conf /etc/NetworkManager/NetworkManager.conf
 
 
 # Enable services
-systemctl enable --now NetworkManager
-systemctl restart NetworkManager
-systemctl enable --now libvirtd 	# QEMU virtualisation
-systemctl enable ly 			# ly ("animate" at /etc/ly/config.ini)
-systemctl disable getty@tty2.service	# ly
-systemctl enable tailscaled		# already active, but whatever
-systemctl enable bluetooth		# bluetooth
-systemctl enable --now power-profiles-daemon # power profiles
+systemctl disable wpa_supplicant		# NetworkManager
+systemctl enable NetworkManager
+systemctl enable libvirtd 			# QEMU virtualisation
+systemctl enable ly 				# ly ("animate" at /etc/ly/config.ini)
+systemctl disable getty@tty2.service
+systemctl enable tailscaled			# already active, but whatever
+systemctl enable bluetooth			# bluetooth
+systemctl enable --now power-profiles-daemon 	# power profiles
 
 
 # Set power-saver profile

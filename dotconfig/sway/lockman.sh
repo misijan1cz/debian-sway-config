@@ -6,8 +6,6 @@
 #    resume 'swaymsg "output * dpms on"' &
 
 # Locks the screen immediately
-cpu sleep
 swaylock
-cpu unsleep
 # Kills last background task so idle timer doesn't keep running
 #kill %%

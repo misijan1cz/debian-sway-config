@@ -27,7 +27,6 @@ default_border pixel 3
 font nerd: JetBrains Mono Nerd Font 12
 
 # Exec on boot
-exec cpu full
 exec swayidle -w \
          timeout 900 'systemctl suspend && swaylock' \
          # \
@@ -53,8 +52,6 @@ bindsym XF86MonBrightnessUp exec light -A 10
 bindsym XF86Display exec $radio-toggle bluetooth
 bindsym XF86WLAN exec $radio-toggle wifi
 bindsym XF86Messenger exec kitty mc
-bindsym XF86Go exec cpu full
-bindsym Cancel exec cpu idle
 bindsym XF86Favorites exec kitty mc cd $fav_dir
 
 bindsym $mod+XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
@@ -66,8 +63,6 @@ bindsym $mod+XF86MonBrightnessUp exec light -A 10
 bindsym $mod+XF86Display exec kitty bluetuith
 bindsym $mod+XF86WLAN exec kitty nmtui
 bindsym $mod+XF86Messenger exec nautilus
-bindsym $mod+XF86Go exec cpu full
-bindsym $mod+Cancel exec cpu efficiency
 bindsym $mod+XF86Favorites exec $vm-windows
 
 #
