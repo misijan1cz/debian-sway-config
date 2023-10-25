@@ -39,7 +39,7 @@ exec $fav_scp
 for_window [title="index_term"] move scratchpad, resize set 1280 720
 
 bindsym $mod+Shift+l exec $lockman
-bindsym $mod+Shift+f exec firefox
+bindsym $mod+Shift+f exec MOZ_ENABLE_WAYLAND=1 firefox
 
 bindsym $mod+p exec grimshot save output
 bindsym $mod+Shift+p exec grimshot save area
