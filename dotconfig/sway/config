@@ -4,20 +4,20 @@
 
 ### Variables
 set $fav_dir /home/mj/Downloads/CED/
-set $fav_scp kitty -T index_term
 # Mod1 Alt, Mod4 Win
 set $mod Mod4
 set $left h
 set $down j
 set $up k
 set $right l
-set $term kitty
+set $term foot
 set $menu wofi --show drun
 # Advanced
 set $vm-windows bash '/home/mj/.config/sway/vm-start.sh'
 set $lockman bash '/home/mj/.config/sway/lockman.sh'
 set $volume-up bash '/home/mj/.config/sway/volume-up.sh' 100
 set $radio-toggle bash '/home/mj/.config/sway/radio-toggle.sh'
+set $fav_scp $term -T index_term
 
 output * bg /home/mj/.config/wallpaper_1080.jpg fill
 
@@ -27,14 +27,12 @@ default_border pixel 3
 font nerd: JetBrains Mono Nerd Font 12
 
 # Exec on boot
+exec source /home/mj/.config/user-dirs.dirs
+exec cpu full
 exec swayidle -w \
          timeout 900 'systemctl suspend && swaylock' \
          # \
          before-sleep 'swaylock'
-
-# This will lock your screen after 300 seconds of inactivity, then turn off
-# your displays after another 300 seconds, and turn your screens back on when
-# resumed. It will also lock your screen before your computer goes to sleep.
 
 # Scratchpad on boot
 exec $fav_scp
@@ -55,8 +53,10 @@ bindsym XF86MonBrightnessDown exec light -U 10
 bindsym XF86MonBrightnessUp exec light -A 10
 bindsym XF86Display exec $radio-toggle bluetooth
 bindsym XF86WLAN exec $radio-toggle wifi
-bindsym XF86Messenger exec kitty mc
-bindsym XF86Favorites exec kitty mc cd $fav_dir
+bindsym XF86Messenger exec $term mc
+bindsym XF86Go exec cpu full
+bindsym Cancel exec cpu idle
+bindsym XF86Favorites exec $term mc cd $fav_dir
 
 bindsym $mod+XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
 bindsym $mod+XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
@@ -64,11 +64,17 @@ bindsym $mod+XF86AudioRaiseVolume exec $volume-up
 bindsym $mod+XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
 bindsym $mod+XF86MonBrightnessDown exec light -U 10
 bindsym $mod+XF86MonBrightnessUp exec light -A 10
-bindsym $mod+XF86Display exec kitty bluetuith
-bindsym $mod+XF86WLAN exec kitty nmtui
+bindsym $mod+XF86Display exec $term bluetuith
+bindsym $mod+XF86WLAN exec $term nmtui
 bindsym $mod+XF86Messenger exec nautilus
+bindsym $mod+XF86Go exec cpu full
+bindsym $mod+Cancel exec cpu efficiency
 bindsym $mod+XF86Favorites exec $vm-windows
 
+#
+# This will lock your screen after 300 seconds of inactivity, then turn off
+# your displays after another 300 seconds, and turn your screens back on when
+# resumed. It will also lock your screen before your computer goes to sleep.
 
 ### Input configuration
 #
