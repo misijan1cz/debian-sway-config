@@ -109,7 +109,7 @@ window#waybar.chromium {
 #pulseaudio,
 #custom-media,
 #tray,
-#custom-fan
+#custom-fan,
 #mode,
 #idle_inhibitor,
 #mpd {
@@ -226,7 +226,7 @@ label:focus {
 }
 
 #idle_inhibitor {
-    background-color: #2d3436;
+    background-color: #89b4fa;
 }
 
 #idle_inhibitor.activated {
@@ -260,6 +260,13 @@ label:focus {
 }
 
 #custom-fan {
+    background: #86b4fa;
+    color: #333333;
+    padding: 0 5px;
+    margin: 6 3px;
+}
+
+#custom-xwaylands {
     background: #86b4fa;
     color: #333333;
     padding: 0 5px;

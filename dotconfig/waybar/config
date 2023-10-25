@@ -4,7 +4,7 @@
     "height": 25, // Waybar height (to be removed for auto height)
     // "width": 1280, // Waybar width
     // Choose the order of the modules
-    "modules-left": ["sway/workspaces", "cpu", "memory", "custom/fan", "sway/mode"],
+    "modules-left": ["custom/launcher", "sway/workspaces", "idle_inhibitor", "cpu", "memory", "custom/fan", "custom/xwaylands", "sway/mode"],
     "modules-center": ["sway/window"],
     "modules-right": ["pulseaudio", "network", "backlight", "sway/language", "battery", "custom/clock", "tray"],
     // Modules configuration
@@ -29,8 +29,8 @@
     "idle_inhibitor": {
         "format": "{icon}",
         "format-icons": {
-            "activated": "",
-            "deactivated": ""
+            "activated": " ",
+            "deactivated": " "
         }
     },
     "tray": {
@@ -116,5 +116,16 @@
     "custom/clock": {
         "exec": "date +'%d. %b %H:%M:%S  '",
         "interval": 15
+    },
+    "custom/xwaylands": {
+	"exec": "xlsclients | wc -l",
+	"format": "{} 󰰲 ",
+	"interval": 15,
+	"on-click": "swaynag -t warning -m 'This is a number of XWayland sessions running. They consume a bit more energy.'"
+    },
+    "custom/launcher":{
+        "format": "  ",
+        "on-click": "wofi --show drun",
+        "on-click-right": "killall rofi"
     }
 }
