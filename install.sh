@@ -1,25 +1,30 @@
 #!/bin/bash
 
-username="mj"
-
 # Check for ROOT user
 if [[ $EUID -ne 0 ]]; then
 	echo "Run me as root, please." 2>&1
 	exit 1
 fi
 
+
+username=$(id -u -n 1000)
+maindir=$(pwd)
+
 # Change to Debian Sid branch
 cp /etc/apt/sources.list /etc/apt/sources.list.bak
-cp sources.list /etc/apt/sources.list
+cp $maindir/sources.list /etc/apt/sources.list
+
+mkdir -p $maindir/builds
 
 # Copy config files
 mkdir -p /home/$username/.config
 mkdir -p /home/$username/.local
 mkdir -p /home/$username/.swaylock
-cp -r dotconfig/* /home/$username/.config/
-cp -r dotlocal/* /home/$username/.local/
-cp -r dotswaylock/* /home/$username/.swaylock/
-cp dotvimrc /home/$username/.vimrc
+mkdir -p /home/$username/Pictures
+cp -r $maindir/dotconfig/* /home/$username/.config/
+cp -r $maindir/dotlocal/* /home/$username/.local/
+cp -r $maindir/dotswaylock/* /home/$username/.swaylock/
+cp $maindir/dotvimrc /home/$username/.vimrc
 
 # Get all necessary packages
 apt update
@@ -47,28 +52,29 @@ apt install -y make gcc libpam0g-dev libxcb1-dev 	# ly greeter dependencies
 
 
 ## Build Swaylock-effects
+#cd $maindir/builds
 #git clone https://github.com/mortie/swaylock-effects
 #cd swaylock-effects
 #meson setup build
 #ninja -C build
 #ninja -C build install
 ##chmod a+s /usr/local/bin/swaylock # for system without PAM
-##cd ..
+##cd $maindir
 
 
 # Get autotiling
 wget https://raw.githubusercontent.com/nwg-piotr/autotiling/master/autotiling/main.py
-mv main.py autotiling
-chmod +x autotiling
-cp autotiling /bin
+mv main.py /usr/bin/autotiling
+chmod +x /usr/bin/autotiling
 
 
 # Build ly
+cd $maindir/builds
 git clone --recurse-submodules https://github.com/fairyglade/ly
 cd ly
 make
 make install installsystemd
-cd ..
+cd $maindir
 
 
 # Install tailscale
@@ -77,19 +83,27 @@ curl -fsSL https://tailscale.com/install.sh | sh
 
 # Set interfaces as managed by NetworkManager
 mv /etc/NetworkManager/NetworkManager.conf /etc/NetworkManager/NetworkManager.conf.bak
-cp NetworkManafer.conf /etc/NetworkManager/NetworkManager.conf
+cp $maindir/NetworkManager.conf /etc/NetworkManager/NetworkManager.conf
 
 
 # Enable services
 systemctl disable wpa_supplicant		# NetworkManager
 systemctl enable NetworkManager
 ufw enable					# firewall
-systemctl enable libvirtd 			# QEMU virtualisation
-systemctl enable ly 				# ly ("animate" at /etc/ly/config.ini)
+systemctl enable libvirtd 			# QEMU virtualization
+systemctl enable ly 				# ly - login screen ("animate" at /etc/ly/config.ini)
 systemctl disable getty@tty2.service
-systemctl enable tailscaled			# already active, but whatever
+systemctl enable tailscaled			# tailscale - already active, but whatever
 systemctl enable bluetooth			# bluetooth
 systemctl enable --now power-profiles-daemon 	# power profiles
+
+
+# Add user to groups
+usermod -a -G libvirt $username			# QEMU virtualization
+
+
+# Give user ownership of all dirs in home
+chown -R $user:$user /home/$username
 
 
 # Set power-saver profile
@@ -99,9 +113,9 @@ powerprofilesctl set power-saver
 # Update fonts
 fc-cache -vf
 
-# Configure eduroam
-curl 'https://cat.eduroam.org/user/API.php?action=downloadInstaller&lang=en&profile=1070&device=linux&generatedfor=user&openroaming=0' > eduroam-cuni.py
-cp eduroam-cuni.py /home/$username/eduroam-cuni.py
+
+# Download eduroam config script
+curl 'https://cat.eduroam.org/user/API.php?action=downloadInstaller&lang=en&profile=1070&device=linux&generatedfor=user&openroaming=0' > /home/$username/eduroam-cuni.py
 
 
 # Set time zone
@@ -110,7 +124,9 @@ timedatectl set-timezone Europe/Prague
 
 # Change target to GUI
 systemctl set-default graphical.target
-bash postinstall.sh
+
+rm -r $maindir/builds
+bash $maindir/postinstall.sh
 
 echo "DONE"
 # THE END
