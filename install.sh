@@ -129,7 +129,7 @@ systemctl set-default graphical.target
 # Corect wpa_supplicant conflict with NetworkManager
 netiface=$(printf '%s\n' /sys/class/net/*/wireless | cut -d/ -f5)
 if [[ -n "$netiface" ]]; then
-	cp $maindir/scripts/wpa_supplicant.conf /etc/wpa_supplicant.conf
+	cp $maindir/configs/wpa_supplicant.conf /etc/wpa_supplicant.conf
 	echo -e "pre-up sudo wpa_supplicant -B -i$netiface -c/etc/wpa_supplicant.conf -Dnl80211 \npost-down sudo killall -q wpa_supplicant" >> /etc/network/interfaces
 else
 	echo "Could not find wireless interface."
