@@ -104,6 +104,10 @@ curl 'https://cat.eduroam.org/user/API.php?action=downloadInstaller&lang=en&prof
 cp eduroam-cuni.py /home/$username/eduroam-cuni.py
 
 
+# Set time zone
+timedatectl set-timezone Europe/Prague
+
+
 # Change target to GUI
 systemctl set-default graphical.target
 bash postinstall.sh
