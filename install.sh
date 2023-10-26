@@ -8,13 +8,17 @@ fi
 
 
 username=$(id -u -n 1000)
-maindir=$(pwd)
+maindir=$(dirname $0)
+
 
 # Change to Debian Sid branch
 cp /etc/apt/sources.list /etc/apt/sources.list.bak
-cp $maindir/sources.list /etc/apt/sources.list
+cp $maindir/configs/sources.list /etc/apt/sources.list
 
+
+# For the purposes of this script
 mkdir -p $maindir/builds
+
 
 # Copy config files
 mkdir -p /home/$username/.config
@@ -24,7 +28,8 @@ mkdir -p /home/$username/Pictures
 cp -r $maindir/dotconfig/* /home/$username/.config/
 cp -r $maindir/dotlocal/* /home/$username/.local/
 cp -r $maindir/dotswaylock/* /home/$username/.swaylock/
-cp $maindir/dotvimrc /home/$username/.vimrc
+cp $maindir/configs/dotvimrc /home/$username/.vimrc
+
 
 # Get all necessary packages
 apt update
@@ -83,7 +88,7 @@ curl -fsSL https://tailscale.com/install.sh | sh
 
 # Set interfaces as managed by NetworkManager
 mv /etc/NetworkManager/NetworkManager.conf /etc/NetworkManager/NetworkManager.conf.bak
-cp $maindir/NetworkManager.conf /etc/NetworkManager/NetworkManager.conf
+cp $maindir/configs/NetworkManager.conf /etc/NetworkManager/NetworkManager.conf
 
 
 # Enable services
@@ -126,14 +131,9 @@ timedatectl set-timezone Europe/Prague
 systemctl set-default graphical.target
 
 
-# Corect wpa_supplicant conflict with NetworkManager
-netiface=$(printf '%s\n' /sys/class/net/*/wireless | cut -d/ -f5)
-if [[ -n "$netiface" ]]; then
-	cp $maindir/configs/wpa_supplicant.conf /etc/wpa_supplicant.conf
-	echo -e "pre-up sudo wpa_supplicant -B -i$netiface -c/etc/wpa_supplicant.conf -Dnl80211 \npost-down sudo killall -q wpa_supplicant" >> /etc/network/interfaces
-else
-	echo "Could not find wireless interface."
-fi
+# Corect wpa_supplicant conflict previous session
+bash $maindir/configure_wpa_supplicant.sh
+
 
 # Cleanup
 rm -r $maindir/builds
