@@ -82,6 +82,14 @@ make install installsystemd
 cd $maindir
 
 
+# Build sway-save-outputs
+cd $maindir/builds
+git clone https://github.com/nwg-piotr/sway-save-outputs
+cd sway-save-outputs
+bash install.sh
+cd $maindir
+
+
 # Install tailscale
 curl -fsSL https://tailscale.com/install.sh | sh
 

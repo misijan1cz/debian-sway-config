@@ -64,7 +64,8 @@
         "format": "{percent}% {icon}",
         "format-icons": ["", ""],
 	"on-scroll-down": "light -U 1",
-	"on-scroll-up": "light -A 1"
+	"on-scroll-up": "light -A 1",
+	"on-click": "wdisplays && sway-save-outputs"
     },
     "battery": {
         "states": {
