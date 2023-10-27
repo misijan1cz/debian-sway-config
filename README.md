@@ -30,4 +30,5 @@ This repository is **not a distribution**.
 For packages included in `.local/bin/`:
 - bluetuith: <https://github.com/darkhz/bluetuith>
 - sway-save-outputs: <https://github.com/nwg-piotr/sway-save-outputs>.
+   
 For all other projects, that were used in `install.sh`.
