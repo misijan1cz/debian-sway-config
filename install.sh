@@ -37,8 +37,8 @@ apt upgrade -y
 apt install -y vim
 apt install -y git gh curl wget 			# user-defined programs
 
-apt install -y xwayland sway swaybg swayidle waybar 	# Sway
-apt install -y foot wofi mc grimshot nautilus light wdisplays xdg-desktop-portal-wlr lm-sensors firefox mako # preconfigured Sway apps (optional)
+apt install -y xwayland sway{,bg,idle} waybar foot	# Sway
+apt install -y wofi mc grimshot nautilus light wdisplays xdg-desktop-portal-wlr lm-sensors firefox mako # preconfigured Sway apps (optional)
 apt install -y python3-i3ipc 				# autotiling
 apt install -y fontconfig 				# additional fonts
 
@@ -47,13 +47,14 @@ apt install -y swaylock 				# swaylock (OR swaylock-effects)
 #apt install -y meson wayland-protocols 		# swaylock-effects compiletime deps
 # WARNING: swaylock-effects is dependent on wayland-client.h library. Not found in Sid on 20.10.2023. :/
 
-apt install -y network-manager bluetooth bluez 		# bluetooth and network
+apt install -y network-manager bluetooth bluez{,-obex}	# bluetooth and network
 apt install -y ufw					# system security
 apt install -y pipewire{,-pulse,-alsa,-jack,-audio} libspa-0.2-bluetooth wireplumber pavucontrol # audio (pipewire)
 apt install -y python3-{pip,dbus} 			# eduroam
 apt install -y power-profiles-daemon 			# Power Profiles
 apt install -y virt-manager qemu-{utils,system-x86,system-gui} libspice-server1 # QEMU virtualisation
 apt install -y make gcc libpam0g-dev libxcb1-dev 	# ly greeter dependencies
+apt install -y python3-i3ipc				# sway-save-outputs runtime dependency
 
 
 ## Build Swaylock-effects
@@ -82,12 +83,12 @@ make install installsystemd
 cd $maindir
 
 
-# Build sway-save-outputs
-cd $maindir/builds
-git clone https://github.com/nwg-piotr/sway-save-outputs
-cd sway-save-outputs
-bash install.sh
-cd $maindir
+## Build sway-save-outputs
+#cd $maindir/builds
+#git clone https://github.com/nwg-piotr/sway-save-outputs
+#cd sway-save-outputs
+#bash install.sh
+#cd $maindir
 
 
 # Install tailscale
