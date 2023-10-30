@@ -41,15 +41,15 @@ gaps outer 5
 default_border pixel 3
 font nerd: JetBrains Mono Nerd Font 12
 
+exec_always autotiling
+
 # Exec on boot
-exec {
-	source /home/$usr/.config/user-dirs.dirs
-	swayidle -w \
+exec source /home/$usr/.config/user-dirs.dirs
+exec swayidle -w \
 		timeout 900 'systemctl suspend && swaylock' \
 		# \
 		before-sleep 'swaylock'
-	swaymsg 'input * xkb_options compose:caps'
-}
+exec swaymsg 'input * xkb_options compose:caps'
 
 # Inputs
 # 	You can get the names of your inputs by running: swaymsg -t get_inputs
@@ -190,7 +190,7 @@ floating_modifier $mod normal
 	# Change normal to inverse to use left mouse button for resizing and right
 	# mouse button for dragging.
 
-# Resizing containers:
+# Resizing
 mode "resize" {
 bindsym {
 	 $left resize shrink width 10px
