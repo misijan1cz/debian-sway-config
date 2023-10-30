@@ -47,7 +47,7 @@ apt install -y swaylock 				# swaylock (OR swaylock-effects)
 #apt install -y meson wayland-protocols 		# swaylock-effects compiletime deps
 # WARNING: swaylock-effects is dependent on wayland-client.h library. Not found in Sid on 20.10.2023. :/
 
-apt install -y network-manager bluetooth bluez{,-obex}	# bluetooth and network
+apt install -y network-manager bluetooth bluez{,-obexd}	# bluetooth and network
 apt install -y ufw					# system security
 apt install -y pipewire{,-pulse,-alsa,-jack,-audio} libspa-0.2-bluetooth wireplumber pavucontrol # audio (pipewire)
 apt install -y python3-{pip,dbus} 			# eduroam
