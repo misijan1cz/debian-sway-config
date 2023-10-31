@@ -83,11 +83,12 @@ make install installsystemd
 cd $maindir
 
 
-## Build sway-save-outputs
-#cd $maindir/builds
-#git clone https://github.com/nwg-piotr/sway-save-outputs
-#cd sway-save-outputs
-#bash install.sh
+# Build sway-save-outputs
+cd $maindir/builds
+git clone https://github.com/nwg-piotr/sway-save-outputs
+cd sway-save-outputs
+bash install.sh
+cp sway_save_outputs /home/$username/.local/bin/sway_save_outputs
 #cd $maindir
 
 
@@ -117,7 +118,7 @@ usermod -a -G libvirt $username			# QEMU virtualization
 
 
 # Give user ownership of all dirs in home
-chown -R $user:$user /home/$username
+chown -R $username:$username /home/$username
 
 
 # Set power-saver profile
