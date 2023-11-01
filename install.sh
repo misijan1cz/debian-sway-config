@@ -25,6 +25,9 @@ mkdir -p /home/$username/.config
 mkdir -p /home/$username/.local
 mkdir -p /home/$username/.swaylock
 mkdir -p /home/$username/Pictures
+mkdir -p /home/$username/Documents
+mkdir -p /home/$username/Music
+mkdir -p /home/$username/Videos
 cp -r $maindir/dotconfig/* /home/$username/.config/
 cp -r $maindir/dotlocal/* /home/$username/.local/
 cp -r $maindir/dotswaylock/* /home/$username/.swaylock/
@@ -101,6 +104,17 @@ mv /etc/NetworkManager/NetworkManager.conf /etc/NetworkManager/NetworkManager.co
 cp $maindir/configs/NetworkManager.conf /etc/NetworkManager/NetworkManager.conf
 
 
+# Corect wpa_supplicant conflict previous session
+netiface=$(printf '%s\n' /sys/class/net/*/wireless | cut -d/ -f5)
+if [[ -n "$netiface" ]] &&  [[ "$(echo $netiface | wc -w)" -eq 1 ]]; then
+	cp $maindir/configs/wpa_supplicant.conf /etc/wpa_supplicant.conf
+	echo -e "pre-up sudo wpa_supplicant -B -i$netiface -c/etc/wpa_supplicant.conf -Dnl80211 \npost-down sudo killall -q wpa_supplicant" >> /etc/network/interfaces
+	echo -e "\nDone configuring wpa_supplicant for use with NetworkManager.\n"
+else
+	echo -e "\nError: None or too many interfaces. Cannot configure wpa_supplicant.\n"
+fi
+
+
 # Enable services
 systemctl disable wpa_supplicant		# NetworkManager
 systemctl enable NetworkManager
@@ -139,10 +153,6 @@ timedatectl set-timezone Europe/Prague
 
 # Change target to GUI
 systemctl set-default graphical.target
-
-
-# Corect wpa_supplicant conflict previous session
-bash $maindir/configure_wpa_supplicant.sh
 
 
 # Cleanup
