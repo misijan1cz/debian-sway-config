@@ -156,7 +156,7 @@ systemctl set-default graphical.target
 
 
 # Cleanup
-rm -r $maindir/builds
+rm -fr $maindir/builds
 bash $maindir/postinstall.sh
 
 echo "DONE"
