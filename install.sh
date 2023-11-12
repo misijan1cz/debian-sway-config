@@ -39,7 +39,7 @@ apt update
 apt upgrade -y
 apt install -y vim
 apt install -y git gh curl wget 			# user-defined programs
-apt install -y build-essential vim git cscope libncurses-dev libssl-dev bison flex git-email # user-defined programs (dev)
+apt install -y build-essential vim git cscope libncurses-dev libssl-dev bison flex bc libelf-dev git-email # user-defined programs (dev)
 
 apt install -y xwayland sway{,bg,idle} waybar foot	# Sway
 apt install -y wofi mc grimshot nautilus light wdisplays xdg-desktop-portal-wlr lm-sensors firefox mako-notifier # preconfigured Sway apps (optional)
