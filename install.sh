@@ -38,7 +38,7 @@ cp $maindir/configs/dotvimrc /home/$username/.vimrc
 apt update
 apt upgrade -y
 apt install -y vim
-apt install -y git gh curl wget 			# user-defined programs
+apt install -y git gh curl wget imv 			# user-defined programs
 apt install -y build-essential vim git cscope libncurses-dev libssl-dev bison flex bc libelf-dev git-email # user-defined programs (dev)
 
 apt install -y xwayland sway{,bg,idle} waybar foot	# Sway
