@@ -6,7 +6,7 @@
     // Choose the order of the modules
     "modules-left": ["custom/launcher", "sway/workspaces", "idle_inhibitor","custom/separator", "cpu", "custom/separator", "memory", "custom/separator", "custom/fan", "custom/separator", "custom/xwaylands"],
     "modules-center": [],
-    "modules-right": ["pulseaudio", "custom/separator", "network", "custom/separator", "backlight", "custom/separator", "sway/language", "custom/separator", "battery", "custom/clock", "tray"],
+    "modules-right": ["pulseaudio", "custom/separator", "network", "custom/separator", "backlight", "custom/separator", "sway/language", "custom/separator", "battery", "custom/separator", "custom/clock", "tray"],
     // Modules configuration
     // "sway/workspaces": {
     //     "disable-scroll": true,
@@ -73,7 +73,7 @@
             "warning": 50,
             "critical": 25
         },
-        "format": "{capacity}% {icon}   {power}W",
+        "format": "{capacity}% {icon}  {power}W",
         "format-charging": "{capacity}% ",
         "format-plugged": "{capacity}% ",
         "format-alt": "{time} {icon}",
@@ -85,14 +85,14 @@
     "network": {
         // "interface": "wlp2*", // (Optional) To force the use of this interface
         "format-wifi": "{essid} ({signalStrength}%) ",
-        "format-ethernet": "{ifname}: {ipaddr}/{cidr} ",
+        "format-ethernet": "{ifname}: {cidr} ",
         "format-linked": "{ifname} (No IP) ",
         "format-disconnected": "Disconnected ⚠",
         "format-alt": "{ifname}: {ipaddr}/{cidr}"
     },
     "pulseaudio": {
         "scroll-step": 5, // %, can be a float
-        "format": "{volume}% {icon}  {format_source}",
+        "format": "{volume}% {icon} {format_source}",
         "format-bluetooth": "{volume}% {icon} {format_source}",
         "format-bluetooth-muted": "X {icon} {format_source}",
         "format-muted": "X {format_source}",
@@ -110,8 +110,8 @@
         "on-click": "pavucontrol"
     },
     "custom/fan": {
-        "exec": "sensors | awk '/fan1:|CPU:/ {print $2, $3}' | paste -s -d '*' | sed 's/*/   /'",
-        "format": "{} {icon}",
+        "exec": "sensors | awk '/fan1:|CPU:/ {print $2, $3}' | paste -s -d '*' | sed 's/*/ /'",
+        "format": "{}{icon}",
         "format-icons": [""],
         "interval": 5 
     },

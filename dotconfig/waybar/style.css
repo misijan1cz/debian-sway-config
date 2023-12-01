@@ -2,11 +2,10 @@
 * {
     border: none;
     /* `ttf-font-awesome` is required to be installed for icons */
-    font-family: "Roboto Mono Medium", Helvetica, Arial, sans-serif;
+    font-family: "JetBrainsMonoNerdFont", Helvetica, Arial, sans-serif;
 
     /* adjust font-size value to your liking: */
     font-size: 13px;
-
     min-height: 0;
 }
 
@@ -42,7 +41,7 @@ window#waybar.chromium {
 }
 
 #workspaces button {
-    padding: 0 0.4em;
+    padding: 0 0.3em;
     background-color: transparent;
     color: #cdd6f4;
     /* Use box-shadow instead of border so the text isn't offset */
@@ -80,11 +79,12 @@ window#waybar.chromium {
 #custom-media,
 #tray,
 #custom-fan,
+#custom-xwaylands,
 #mode,
 #idle_inhibitor,
 #mpd {
-    padding: 0 10px;
-    margin: 6px 3px; 
+    padding: 5 5px;
+    margin: 0px 0px; 
 }
 
 #window,
@@ -128,17 +128,7 @@ label:focus {
 }
 
 #language {
-    padding: 0 5px;
+    padding: 0 3px;
     margin: 6px 3px;
     min-width: 16px;
-}
-
-#custom-fan {
-    padding: 0 5px;
-    margin: 6 3px;
-}
-
-#custom-xwaylands {
-    padding: 0 5px;
-    margin: 6 3px;
 }
