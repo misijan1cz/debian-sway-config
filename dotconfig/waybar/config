@@ -4,25 +4,30 @@
     "height": 15, // Waybar height (to be removed for auto height)
     // "width": 1280, // Waybar width
     // Choose the order of the modules
-    "modules-left": ["custom/launcher", "sway/workspaces", "idle_inhibitor","custom/separator", "cpu", "custom/separator", "memory", "custom/separator", "custom/fan", "custom/separator", "custom/xwaylands"],
+    "modules-left": ["custom/launcher", "sway/workspaces", "idle_inhibitor","custom/separator", "cpu", "custom/separator", "memory", "custom/separator", "custom/fan", "custom/separator", "custom/xwaylands", "custom/scratchpad-indicator"],
     "modules-center": [],
-    "modules-right": ["pulseaudio", "custom/separator", "network", "custom/separator", "backlight", "custom/separator", "sway/language", "custom/separator", "battery", "custom/separator", "custom/clock", "tray"],
+    "modules-right": ["pulseaudio", "custom/separator", "network", "custom/separator", "backlight", "custom/gammastep", "custom/separator", "sway/language", "custom/separator", "battery", "custom/separator", "clock", "tray"],
     // Modules configuration
-    // "sway/workspaces": {
+    "sway/workspaces": {
     //     "disable-scroll": true,
-    //     "all-outputs": true,
-    //     "format": "{name}: {icon}",
-    //     "format-icons": {
-    //         "1": "",
-    //         "2": "",
-    //         "3": "",
-    //         "4": "",
-    //         "5": "",
-    //         "urgent": "",
-    //         "focused": "",
-    //         "default": ""
-    //     }
-    // },
+        "all-outputs": true,
+        "format": " {icon} ",
+        "format-icons": {
+            "10": "",
+            "1": " 󰈹",
+            "2": "",
+            "3": "",
+	    "4": " 󰲦",
+	    "5": " 󰲨",
+	    "6": " 󰲪",
+	    "7": " 󰲬",
+	    "8": " 󰲮",
+	    "9": " 󰲰",
+            "urgent": "",
+            "focused": "",
+            "default": ""
+        }
+    },
     "sway/mode": {
         "format": "<span style=\"italic\">{}</span>"
     },
@@ -39,17 +44,18 @@
     },
     "clock": {
         "format": "{:%H:%M:%S}",
-        //"timezone": "Europe/Prague",
-        //"tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        //"format-alt": "{:%Y-%m-%d}",
-        //"interval": 15,
+        "timezone": "Europe/Prague",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "format-alt": "{:%d.%m.%y}",
+        "interval": 15,
     },
     "cpu": {
-        "format": "{usage}% ",
-        "tooltip": false
+        "format": "{avg_frequency}GHz ",
+	"on-click": "foot htop"
     },
     "memory": {
-        "format": "{used}GiB "
+        "format": "{used}GiB ",
+	"tooltip": false
     },
     "temperature": {
         // "thermal-zone": 2,
@@ -61,11 +67,20 @@
     },
     "backlight": {
         // "device": "acpi_video1",
-        "format": "{percent}% {icon}",
+        "format": "{percent}%",
         "format-icons": ["", ""],
 	"on-scroll-down": "light -U 1",
 	"on-scroll-up": "light -A 1",
 	"on-click": "wdisplays && sway-save-outputs"
+    },
+    "custom/gammastep": {
+	"format": "{} ",
+	"exec": "[ $(pgrep gammastep) ] && echo '' || echo ''",
+	"on-click": "gammastep",
+	"on-click-right": "killall gammastep",
+	"on-scroll-down": "light -U 1",
+	"on-scroll-up": "light -A 1",
+	"interval": 15
     },
     "battery": {
         "states": {
@@ -80,18 +95,18 @@
         // "format-good": "", // An empty format will hide the module
         // "format-full": "",
         "format-icons": ["", "", "", "", ""],
-        "interval": 15
+        "interval": 10
     },
     "network": {
         // "interface": "wlp2*", // (Optional) To force the use of this interface
         "format-wifi": "{essid} ({signalStrength}%) ",
-        "format-ethernet": "{ifname}: {cidr} ",
-        "format-linked": "{ifname} (No IP) ",
+        "format-ethernet": "{ifname} 󰴽",
+        "format-linked": "{ifname} (No IP) ",
         "format-disconnected": "Disconnected ⚠",
         "format-alt": "{ifname}: {ipaddr}/{cidr}"
     },
     "pulseaudio": {
-        "scroll-step": 5, // %, can be a float
+        "scroll-step": 1, // %, can be a float
         "format": "{volume}% {icon} {format_source}",
         "format-bluetooth": "{volume}% {icon} {format_source}",
         "format-bluetooth-muted": "X {icon} {format_source}",
@@ -99,9 +114,9 @@
         "format-source": "{volume}% ",
         "format-source-muted": "",
         "format-icons": {
-            "headphone": "",
-            "hands-free": "",
-            "headset": "",
+            "headphone": "󰋋",
+            "hands-free": "󰋍",
+            "headset": "󰋍",
             "phone": "",
             "portable": "",
             "car": "",
@@ -113,7 +128,8 @@
         "exec": "sensors | awk '/fan1:|CPU:/ {print $2, $3}' | paste -s -d '*' | sed 's/*/ /'",
         "format": "{}{icon}",
         "format-icons": [""],
-        "interval": 5 
+	"tooltip": false,
+        "interval": 10 
     },
     "custom/clock": {
         "exec": "date +'%d. %b %H:%M:%S  '",
@@ -121,8 +137,9 @@
     },
     "custom/xwaylands": {
 	"exec": "xlsclients | wc -l",
-	"format": "{} 󰰲 ",
-	"interval": 15,
+	"format": "{}  ",
+	"interval": 10,
+	"tooltip-format": "Number of Xwayland sessions",
 	"on-click-right": "swaynag -t warning -m 'Kill all Xwayland sessions?' -z 'Yeet!' 'killall Xwayland'"
     },
     "custom/launcher":{
@@ -130,6 +147,14 @@
         "interval": "once",
         "on-click": "wofi --show drun",
         "on-click-right": "killall wofi"
+    },
+    "custom/scratchpad-indicator": {
+        "interval": 10,
+        "return-type": "json",
+        "exec": "swaymsg -t get_tree | jq --unbuffered --compact-output '(recurse(.nodes[]) | select(.name == \"__i3_scratch\") | .focus) as $scratch_ids | [..  | (.nodes? + .floating_nodes?) // empty | .[] | select(.id |IN($scratch_ids[]))] as $scratch_nodes | if ($scratch_nodes|length) > 0 then { text: \"\\($scratch_nodes | length)\", tooltip: $scratch_nodes | map(\"\\(.app_id // .window_properties.class) (\\(.id)): \\(.name)\") | join(\"\\n\") } else empty end'",
+        "format": "{}  ",
+        "on-click": "exec swaymsg 'scratchpad show'",
+        "on-click-right": "exec swaymsg 'move scratchpad'"
     },
     "custom/separator": {
         "format": "|",

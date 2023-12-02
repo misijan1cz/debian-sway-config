@@ -34,11 +34,11 @@ for_window {
 }
 
 
-output * bg /home/$usr/.config/wallpaper_1080.jpg fill
+output * bg /home/$usr/.config/wallpaper.jpg fill
 
-gaps inner 10
-gaps outer 5
-default_border pixel 3
+gaps inner 3
+gaps outer 3
+default_border pixel 2
 font nerd: JetBrains Mono Nerd Font 12
 
 exec_always autotiling
@@ -49,14 +49,14 @@ exec swayidle -w \
 		timeout 900 'systemctl suspend && swaylock' \
 		# \
 		before-sleep 'swaylock'
-exec swaymsg 'input * xkb_options compose:caps'
 
 # Inputs
 # 	You can get the names of your inputs by running: swaymsg -t get_inputs
 # 	Read `man 5 sway-input` for more information about this section.
 
 input * {
-	xkb_layout "cz(qwerty)"
+	xkb_layout "cz(qwerty),gb"
+	xkb_options "grp:win_space_toggle,compose:rctrl"
 }
 
 input "type:pointer" {
@@ -165,6 +165,8 @@ bindsym {
 	 $mod+Mod1+8 move container to workspace number 8
 	 $mod+Mod1+9 move container to workspace number 9
 	 $mod+Mod1+0 move container to workspace number 10
+	 Mod1+Tab workspace next
+	 Mod1+Shift+Tab workspace prev
 
 	# Layout:
 	 $mod+b splith

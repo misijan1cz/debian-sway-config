@@ -12,8 +12,8 @@ maindir=$(dirname $0)
 
 
 # Change to Debian Sid branch
-cp /etc/apt/sources.list /etc/apt/sources.list.bak
-cp $maindir/configs/sources.list /etc/apt/sources.list
+#cp /etc/apt/sources.list /etc/apt/sources.list.bak
+#cp $maindir/configs/sources.list /etc/apt/sources.list
 
 
 # For the purposes of this script
@@ -38,11 +38,11 @@ cp $maindir/configs/dotvimrc /home/$username/.vimrc
 apt update
 apt upgrade -y
 apt install -y vim
-apt install -y git gh curl wget imv 			# user-defined programs
+apt install -y git gh curl wget imv firefox		# user-defined programs
 apt install -y build-essential vim git cscope libncurses-dev libssl-dev bison flex bc libelf-dev git-email # user-defined programs (dev)
 
 apt install -y xwayland sway{,bg,idle} waybar foot	# Sway
-apt install -y wofi mc grimshot nautilus light wdisplays xdg-desktop-portal-wlr lm-sensors firefox mako-notifier # preconfigured Sway apps (optional)
+apt install -y wofi mc grimshot nautilus light wdisplays xdg-desktop-portal-wlr lm-sensors mako-notifier # preconfigured Sway apps (optional)
 apt install -y python3-i3ipc 				# autotiling
 apt install -y fontconfig 				# additional fonts
 
