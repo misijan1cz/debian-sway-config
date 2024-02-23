@@ -1,3 +1,66 @@
-" Set enviroment"
-set mouse=a
+" VIM configuration and 
+
+" Movement
+set mouse=a scrolloff=8
+
+" Line Numbering
+set number relativenumber numberwidth=2
+
+" Syntax behavior
+set tabstop=4 shiftwidth=4 softtabstop=4
+set autoindent smartindent
 syntax on
+
+" Language specific settings
+" ...Fortran - use whitespaces as tab
+autocmd Filetype fortran setlocal expandtab
+
+" Search behavior
+set ignorecase smartcase hlsearch
+
+"Disable highlight by hitting return
+nnoremap <CR> :noh<CR><CR>
+
+
+" -----------------------------------
+" ------------- MOTIONS -------------
+" -----------------------------------
+"
+" ------------ NAVIGATION -----------
+"
+" ^			... jump to first character
+" $			... jump to last character
+" 35G		... jump to line 35
+" gg		... jump to first line
+" G			... jump to last line
+" w			... jump to next word
+" dw		... delete word
+" d$		... delete from cursor to the end of line
+" dG		... delete from cursor to the end of file
+" 
+" H			... jump to the top of the screen
+" M			... jump to the middle of the screen
+" L			... jump to the bottom of the screen
+" <C-u>		... jump halfway up the screen
+" <C-d>		... jump halfway down the screen
+"
+" u			... undo
+" <C-r>		... redo
+" 
+" ------- SEARCH and REPLACE --------
+"
+" /foo cgn bar		... search and replace inplace
+" :%s/foo/bar		... replace foo with bar everywhere
+" :%s/foo/bar/gci	... replace foo with bar with confirmation
+" <C-v> c			... replace VISUAL-BLOCK
+"
+" -------- EXTERNAL COMMANDS --------
+"
+" :!foo			... replace selected text with its result from foo
+"
+"
+"
+"
+"
+"
+"

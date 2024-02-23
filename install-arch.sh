@@ -10,15 +10,8 @@ fi
 username=$(id -u -n 1000)
 maindir=$(dirname $0)
 
-
-# Change to Debian Sid branch
-#cp /etc/apt/sources.list /etc/apt/sources.list.bak
-#cp $maindir/configs/sources.list /etc/apt/sources.list
-
-
 # For the purposes of this script
 mkdir -p $maindir/builds
-
 
 # Copy config files
 mkdir -p /home/$username/.config
@@ -35,30 +28,29 @@ cp $maindir/configs/dotvimrc /home/$username/.vimrc
 
 
 # Get all necessary packages
-apt update
-apt upgrade -y
-apt install -y vim
-apt install -y git gh curl wget imv firefox		# user-defined programs
-apt install -y build-essential vim git cscope libncurses-dev libssl-dev bison flex bc libelf-dev git-email # user-defined programs (dev)
+pacman -Syu --noconfirm
+pacman -S --noconfirm vim
+pacman -S --noconfirm git gh curl wget imv firefox		# user-defined programs
+pacman -S --noconfirm build-essential vim git cscope libncurses-dev libssl-dev bison flex bc libelf-dev git-email # user-defined programs (dev)
 
-apt install -y xwayland sway{,bg,idle} waybar foot	# Sway
-apt install -y wofi mc grimshot thunar light wdisplays xdg-desktop-portal-wlr lm-sensors mako-notifier playerctl mate-polkit # preconfigured Sway tools (optional)
-apt install -y python3-i3ipc 			# autotiling
-apt install -y fontconfig 				# additional fonts
+pacman -S --noconfirm xwayland sway{,bg,idle} waybar foot	# Sway
+pacman -S --noconfirm wofi mc grimshot nautilus light wdisplays xdg-desktop-portal-wlr lm-sensors mako-notifier # preconfigured Sway apps (optional)
+pacman -S --noconfirm python3-i3ipc 				# autotiling
+pacman -S --noconfirm fontconfig 				# additional fonts
 
-apt install -y swaylock 				# swaylock (OR swaylock-effects)
-#apt install -y libxkbcommon-x11-0 libcairo2 libpam0g 	# swaylock-effects runtime deps
-#apt install -y meson wayland-protocols 		# swaylock-effects compiletime deps
+pacman -S --noconfirm swaylock 				# swaylock (OR swaylock-effects)
+#pacman -S --noconfirm libxkbcommon-x11-0 libcairo2 libpam0g 	# swaylock-effects runtime deps
+#pacman -S --noconfirm meson wayland-protocols 		# swaylock-effects compiletime deps
 # WARNING: swaylock-effects is dependent on wayland-client.h library. Not found in Sid on 20.10.2023. :/
 
-apt install -y network-manager bluetooth bluez{,-obexd}	# bluetooth and network
-apt install -y ufw					# system security
-apt install -y pipewire{,-pulse,-alsa,-jack,-audio} libspa-0.2-bluetooth wireplumber pavucontrol # audio (pipewire)
-apt install -y python3-{pip,dbus} 			# eduroam
-apt install -y power-profiles-daemon 			# Power Profiles
-apt install -y virt-manager qemu-{utils,system-x86,system-gui} libspice-server1 # QEMU virtualisation
-apt install -y make gcc libpam0g-dev libxcb1-dev 	# ly greeter dependencies
-apt install -y python3-i3ipc				# sway-save-outputs runtime dependency
+pacman -S --noconfirm network-manager bluetooth bluez{,-obexd}	# bluetooth and network
+pacman -S --noconfirm ufw					# system security
+pacman -S --noconfirm pipewire{,-pulse,-alsa,-jack,-audio} libspa-0.2-bluetooth wireplumber pavucontrol # audio (pipewire)
+pacman -S --noconfirm python3-{pip,dbus} 			# eduroam
+pacman -S --noconfirm power-profiles-daemon 			# Power Profiles
+pacman -S --noconfirm virt-manager qemu-{utils,system-x86,system-gui} libspice-server1 # QEMU virtualisation
+pacman -S --noconfirm make gcc libpam0g-dev libxcb1-dev 	# ly greeter dependencies
+pacman -S --noconfirm python3-i3ipc				# sway-save-outputs runtime dependency
 
 
 ## Build Swaylock-effects

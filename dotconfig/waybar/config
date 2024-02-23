@@ -1,15 +1,35 @@
 {
-    // "layer": "top", // Waybar at top layer
-    // "position": "bottom", // Waybar position (top|bottom|left|right)
-    "height": 15, // Waybar height (to be removed for auto height)
-    // "width": 1280, // Waybar width
-    // Choose the order of the modules
-    "modules-left": ["custom/launcher", "sway/workspaces", "idle_inhibitor","custom/separator", "cpu", "custom/separator", "memory", "custom/separator", "custom/fan", "custom/separator", "custom/xwaylands", "custom/scratchpad-indicator"],
-    "modules-center": [],
-    "modules-right": ["pulseaudio", "custom/separator", "network", "custom/separator", "backlight", "custom/gammastep", "custom/separator", "sway/language", "custom/separator", "battery", "custom/separator", "clock", "tray"],
-    // Modules configuration
-    "sway/workspaces": {
-    //     "disable-scroll": true,
+//----------------------------
+// Base configuration
+//----------------------------
+    "layer": "bottom",
+    "position": "top", 		// Waybar position (top|bottom|left|right)
+    "height": 10, 			// Waybar height (to be removed for auto height)
+    // "width": 1280, 		// Waybar width
+	"bar_id": "bar_main",
+	//"ipc": true,
+    
+//----------------------------------
+// Choose the order of the modules
+//----------------------------------
+	
+	// Full view
+    //"modules-left": ["custom/launcher", "sway/workspaces", "idle_inhibitor","custom/separator", "cpu", "custom/separator", "memory", "custom/separator", "custom/fan", "custom/separator", "custom/xwaylands", "custom/scratchpad-indicator"],
+    //"modules-right": ["pulseaudio", "custom/separator", "network", "custom/separator", "backlight", "custom/gammastep", "custom/separator", "sway/language", "custom/separator", "battery", "custom/separator", "clock", "tray"],
+    
+	// Reduced view (mobile)
+	"modules-left": ["sway/workspaces", "idle_inhibitor","custom/separator", "memory", "custom/separator", "custom/fan"],
+    "modules-right": ["pulseaudio#reduced", "custom/separator", "network", "custom/separator", "backlight", "custom/gammastep", "custom/separator", "sway/language", "custom/separator", "battery#reduced", "custom/separator", "clock", "tray"],
+    
+	// Center and right
+	"modules-center": ["sway/mode", "mpris"],
+    
+//----------------------------------
+// Modules configuration
+//----------------------------------
+    "sway/workspaces": {},
+    "sway/workspaces#fancy": {
+        "disable-scroll": false,
         "all-outputs": true,
         "format": " {icon} ",
         "format-icons": {
@@ -17,19 +37,16 @@
             "1": " 󰈹",
             "2": "",
             "3": "",
-	    "4": " 󰲦",
-	    "5": " 󰲨",
-	    "6": " 󰲪",
-	    "7": " 󰲬",
-	    "8": " 󰲮",
-	    "9": " 󰲰",
-            "urgent": "",
-            "focused": "",
-            "default": ""
+			"4": " 󰲦",
+			"5": " 󰲨",
+			"6": " 󰲪",
+			"7": " 󰲬",
+			"8": " 󰲮",
+			"9": " 󰲰"
+            //"urgent": "",
+            //"focused": "",
+            //"default": ""
         }
-    },
-    "sway/mode": {
-        "format": "<span style=\"italic\">{}</span>"
     },
     "idle_inhibitor": {
         "format": "{icon}",
@@ -50,12 +67,13 @@
         "interval": 15,
     },
     "cpu": {
-        "format": "{avg_frequency}GHz ",
-	"on-click": "foot htop"
+        "format": "{load} ",
+		"on-click": "foot htop"
     },
     "memory": {
         "format": "{used}GiB ",
-	"tooltip": false
+		"tooltip": false,
+		"on-click": "foot htop"
     },
     "temperature": {
         // "thermal-zone": 2,
@@ -69,19 +87,19 @@
         // "device": "acpi_video1",
         "format": "{percent}%",
         "format-icons": ["", ""],
-	"on-scroll-down": "light -U 1",
-	"on-scroll-up": "light -A 1",
-	"on-click": "wdisplays && sway-save-outputs"
+		"on-scroll-down": "light -U 1",
+		"on-scroll-up": "light -A 1",
+		"on-click": "wdisplays && sway-save-outputs"
     },
     "custom/gammastep": {
-	"format": "{} ",
-	"exec": "[ $(pgrep gammastep) ] && echo '' || echo ''",
-	"on-click": "gammastep",
-	"on-click-right": "killall gammastep",
-	"on-scroll-down": "light -U 1",
-	"on-scroll-up": "light -A 1",
-	"interval": 15
-    },
+		"format": "{} ",
+		"exec": "[ $(pgrep gammastep) ] && echo '' || echo ''",
+		"on-click": "gammastep",
+		"on-click-right": "killall gammastep",
+		"on-scroll-down": "light -U 1",
+		"on-scroll-up": "light -A 1",
+		"interval": 15
+		},
     "battery": {
         "states": {
             // "good": 70,
@@ -89,7 +107,7 @@
             "critical": 25
         },
         "format": "{capacity}% {icon}  {power}W",
-        "format-charging": "{capacity}% ",
+        "format-charging": "{capacity}% ",
         "format-plugged": "{capacity}% ",
         "format-alt": "{time} {icon}",
         // "format-good": "", // An empty format will hide the module
@@ -97,9 +115,24 @@
         "format-icons": ["", "", "", "", ""],
         "interval": 10
     },
+    "battery#reduced": {
+        "states": {
+            // "good": 70,
+            "warning": 50,
+            "critical": 25
+        },
+        "format": "{capacity}% {icon} ",
+        "format-charging": "{capacity}% ",
+        "format-plugged": "{capacity}% ",
+        "format-alt": "{time} {icon}",
+        // "format-good": "", // An empty format will hide the module
+        // "format-full": "",
+        "format-icons": ["", "", "", "", ""],
+        "interval": 60
+    },
     "network": {
         // "interface": "wlp2*", // (Optional) To force the use of this interface
-        "format-wifi": "{essid} ({signalStrength}%) ",
+        "format-wifi": "{essid} ({signalStrength}%)  ",
         "format-ethernet": "{ifname} 󰴽",
         "format-linked": "{ifname} (No IP) ",
         "format-disconnected": "Disconnected ⚠",
@@ -124,11 +157,30 @@
         },
         "on-click": "pavucontrol"
     },
+	"pulseaudio#reduced": {
+        "scroll-step": 1, // %, can be a float
+        "format": "{volume}% {icon} {format_source}",
+        "format-bluetooth": "{volume}% {icon} {format_source}",
+        "format-bluetooth-muted": "X {icon} {format_source}",
+        "format-muted": "X {format_source}",
+        "format-source": "",
+        "format-source-muted": "",
+        "format-icons": {
+            "headphone": "󰋋",
+            "hands-free": "󰋍",
+            "headset": "󰋍",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", ""]
+        },
+        "on-click": "pavucontrol"
+	},
     "custom/fan": {
         "exec": "sensors | awk '/fan1:|CPU:/ {print $2, $3}' | paste -s -d '*' | sed 's/*/ /'",
         "format": "{}{icon}",
         "format-icons": [""],
-	"tooltip": false,
+		"tooltip": false,
         "interval": 10 
     },
     "custom/clock": {
@@ -136,11 +188,11 @@
         "interval": 15
     },
     "custom/xwaylands": {
-	"exec": "xlsclients | wc -l",
-	"format": "{}  ",
-	"interval": 10,
-	"tooltip-format": "Number of Xwayland sessions",
-	"on-click-right": "swaynag -t warning -m 'Kill all Xwayland sessions?' -z 'Yeet!' 'killall Xwayland'"
+		"exec": "xlsclients | wc -l",
+		"format": "{}  ",
+		"interval": 10,
+		"tooltip-format": "Number of Xwayland sessions",
+		"on-click-right": "swaynag -t warning -m 'Kill all Xwayland sessions?' -z 'Yeet!' 'killall Xwayland'"
     },
     "custom/launcher":{
         "format": "  ",
@@ -160,5 +212,17 @@
         "format": "|",
         "interval": "once",
         "tooltip": false
-    }
+    },
+	"mpris": {
+		"format": "{player_icon} {dynamic}",
+		"format-paused": "{status_icon} <i>{dynamic}</i>",
+		"player-icons": {
+			"default": "▶",
+			"mpv": "🎵"
+		},
+		"status-icons": {
+			"paused": "⏸"
+		},
+		// "ignored-players": ["firefox"]
+	}
 }

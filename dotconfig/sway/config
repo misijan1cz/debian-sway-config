@@ -1,29 +1,28 @@
-# Copy this to ~/.config/sway/config and edit it to your liking.
-#
-# Read `man 5 sway` for a complete reference.
+## Copy this to ~/.config/sway/config and edit it to your liking.
+## Read `man 5 sway` for a complete reference.
 
-set {
-	 $usr mj
-	 $fav_dir /home/$usr/Downloads/
-	
-	# Mod1 Alt, Mod4 Win
-	 $mod Mod4
-	 $left h
-	 $down j
-	 $up k
-	 $right l
-	 $term foot
-	 $menu wofi --show drun
-	# Advanced
-	 $vm-windows bash '/home/$usr/.config/sway/vm-start.sh'
-	 $lockman bash '/home/$usr/.config/sway/lockman.sh'
-	 $volume-up bash '/home/$usr/.config/sway/volume-up.sh' 100
-	 $radio-toggle bash '/home/$usr/.config/sway/radio-toggle.sh'
-	# Scratchpad
-	 $term_scp $term --app-id=index_term
-	 $term_scp_id index_term
-}
+### Set variables ###
+set $usr mj
+set $fav_dir /home/$usr/Downloads/
+# Mod1 Alt, Mod4 Win
+set $mod Mod4
+set $left h
+set $down j
+set $up k
+set $right l
+set $term foot
+set $menu wofi --exec-search --gtk-dark --lines 10 --show drun
+set $files-gui thunar
+set $files-tui mc
+# Advanced
+set $vm-windows bash '/home/$usr/.config/sway/vm-start.sh'
+set $lockman bash '/home/$usr/.config/sway/lockman.sh'
+set $volume-up bash '/home/$usr/.config/sway/volume-up.sh' 100
+set $radio-toggle bash '/home/$usr/.config/sway/radio-toggle.sh'
 
+### Scratchpad ###
+set $term_scp $term --app-id=index_term
+set $term_scp_id index_term
 for_window {
 	# Scratchpad terminal
   	 [app_id=$term_scp_id] {
@@ -33,24 +32,31 @@ for_window {
 	 }
 }
 
-
+### Styling ###
 output * bg /home/$usr/.config/wallpaper.jpg fill
-
-gaps inner 3
-gaps outer 3
+#output * bg #000000 solid_color
+gaps inner 0
+gaps outer 0
 default_border pixel 2
 font nerd: JetBrains Mono Nerd Font 12
 
+### Enable autotiling ###
 exec_always autotiling
 
-# Exec on boot
+### Exec on boot ###
+# xdg-desktoop-portal / systemd
+exec export XDG_CURRENT_DESKTOP=sway
+exec export XDG_SESSION_DESKTOP=sway
+exec export XDG_SESSION_TYPE=wayland
+# desktop env
 exec source /home/$usr/.config/user-dirs.dirs
+exec /usr/libexec/polkit-mate-authentication-agent-1
 exec swayidle -w \
 		timeout 900 'systemctl suspend && swaylock' \
 		# \
 		before-sleep 'swaylock'
 
-# Inputs
+### Inputs ###
 # 	You can get the names of your inputs by running: swaymsg -t get_inputs
 # 	Read `man 5 sway-input` for more information about this section.
 
@@ -63,11 +69,98 @@ input "type:pointer" {
   #accel_profile flat
   pointer_accel 0.8
 }
+
 input "type:touchpad" {
 	# enable tap to click
 	tap enable
 	natural_scroll enable
 	scroll_factor 0.5
+}
+
+### MODE: Resize ###
+set $mode_resize "active: resize"
+mode $mode_resize {
+	 bindsym $left resize shrink width 10px
+	 bindsym $down resize grow height 10px
+	 bindsym $up resize shrink height 10px
+	 bindsym $right resize grow width 10px
+	# Ditto, with arrow keys
+	 bindsym Left resize shrink width 10px
+	 bindsym Down resize grow height 10px
+	 bindsym Up resize shrink height 10px
+	 bindsym Right resize grow width 10px
+	# Return to default mode
+	 bindsym space mode "default"
+	 bindsym Return mode "default"
+	 bindsym Escape mode "default"
+}
+
+### MODE: Power options ###
+set $mode_power "[p]oweroff [r]eboot [s]oft-reboot [l]ock [e]xit-sway"
+mode $mode_power {
+	 bindsym p exec systemctl poweroff, mode "default"f
+	 bindsym r exec systemctl reboot, mode "default"t
+	 bindsym s exec systemctl soft-reboot, mode "default"
+	 bindsym l exec $lockman, mode "default"
+	 bindsym e exec swaymsg exit, mode "default"t
+	# Return to default mode
+	 bindsym space mode "default"
+	 bindsym Return mode "default"
+	 bindsym Escape mode "default"
+}
+
+set $mode_launch "[f]irefox [n]autilus [t]erminal"
+mode $mode_launch {
+	 bindsym f exec MOZ_ENABLE_WAYLAND=1 firefox, mode "default"
+	 bindsym n exec nautilus, mode "default"
+	 bindsym t exec $term, mode "default"
+	# Return to default mode
+	 bindsym space mode "default"
+	 bindsym Return mode "default"
+	 bindsym Escape mode "default"
+}
+
+set $mode_tools "[d]isplays [n]ight-scr [m]-day-scr [p]rt-scr [s]el-scr"
+mode $mode_tools {
+	 bindsym d exec wdisplays && sway-save-outputs, mode "default"
+	 bindsym n exec "gammastep", mode "default"
+	 bindsym m exec "killall gammastep", mode "default"
+	 bindsym p grimshot save output, mode "default"
+	 bindsym s grimshot save area, mode "default"
+	# Return to default mode
+	 bindsym space mode "default"
+	 bindsym Return mode "default"
+	 bindsym Escape mode "default"
+}
+
+set $mode_networking "[b]t-tui [n]m-tui [f]light-toggle"
+mode $mode_networking {
+	 bindsym b exec $term bluetuith, mode "default"
+	 bindsym n exec $term nmtui, mode "default"
+	 bindsym f exec $radio-toggle, mode "default"
+	# Return to default mode
+	 bindsym space mode "default", mode "default"
+	 bindsym Return mode "default", mode "default"
+	 bindsym Escape mode "default", mode "default"
+}
+
+### MODE: Selector ###
+set $mode_select "[p]ower [l]aunch [t]ools [n]et [r]esize"
+mode $mode_select {
+	 bindsym p mode $mode_power
+	 bindsym r mode $mode_resize
+	 bindsym l mode $mode_launch
+	 bindsym t mode $mode_tools
+	 bindsym n mode $mode_networking
+	 bindsym $mod+p mode $mode_power
+	 bindsym $mod+r mode $mode_resize
+	 bindsym $mod+l mode $mode_launch
+	 bindsym $mod+t mode $mode_tools
+	 bindsym $mod+n mode $mode_networking
+	# Return to default mode
+	 bindsym space mode "default"
+	 bindsym Return mode "default"
+	 bindsym Escape mode "default"
 }
 
 ### Key bindings
@@ -79,6 +172,7 @@ bindsym {
 
 	 $mod+p exec grimshot save output
 	 $mod+Shift+p exec grimshot save area
+	 $mod+i exec $files-gui
 
 	# Function keys pt 1 (use xev to find, XF86WakeUp):
 	 XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
@@ -87,12 +181,10 @@ bindsym {
 	 XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
 	 XF86MonBrightnessDown exec light -U 10
 	 XF86MonBrightnessUp exec light -A 10
-	 XF86Display exec $radio-toggle bluetooth
-	 XF86WLAN exec $radio-toggle wifi
-	 XF86Messenger exec $term mc
-	 XF86Go exec cpu full
-	 Cancel exec cpu idle
-	 XF86Favorites exec $term mc cd $fav_dir
+	 XF86Display exec wdisplays && sway-save-outputs
+	 XF86WLAN exec $radio-toggle
+	 XF86Messenger exec $term $files-tui
+	 XF86Favorites exec $term $files-tui cd $fav_dir
 
 	# Function keys pt 2
 	 $mod+XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
@@ -103,9 +195,9 @@ bindsym {
 	 $mod+XF86MonBrightnessUp exec light -A 10
 	 $mod+XF86Display exec $term bluetuith
 	 $mod+XF86WLAN exec $term nmtui
-	 $mod+XF86Messenger exec nautilus
-	 $mod+XF86Go exec cpu full
-	 $mod+Cancel exec cpu efficiency
+	 $mod+XF86Messenger exec $files-gui
+	 #$mod+XF86Go exec cpu full
+	 #$mod+Cancel exec cpu efficiency
 	 $mod+XF86Favorites exec $vm-windows
 
 	# Basics:
@@ -118,7 +210,7 @@ bindsym {
 
 	# Exit sway (logs you out of your Wayland session)
 	 $mod+Shift+e exec swaynag -t warning -m 'Ye shall be warned! Thy Wayland session shall get forfit.' -b 'Yeet!' 'swaymsg exit'
-	 $mod+Alt+Shift+e exec exec swaymsg exit
+	 $mod+Alt+Shift+e exec swaymsg exit
 
 	# Moving around:
 	# Move focus around
@@ -141,30 +233,6 @@ bindsym {
 	 $mod+Shift+Down move down
 	 $mod+Shift+Up move up
 	 $mod+Shift+Right move Right
-
-	# Workspaces:
-	# Switch to workspace
-	 $mod+1 workspace number 1
-	 $mod+2 workspace number 2
-	 $mod+3 workspace number 3
-	 $mod+4 workspace number 4
-	 $mod+5 workspace number 5
-	 $mod+6 workspace number 6
-	 $mod+7 workspace number 7
-	 $mod+8 workspace number 8
-	 $mod+9 workspace number 9
-	 $mod+0 workspace number 10
-	# Move to workspace
-	 $mod+Mod1+1 move container to workspace number 1
-	 $mod+Mod1+2 move container to workspace number 2
-	 $mod+Mod1+3 move container to workspace number 3
-	 $mod+Mod1+4 move container to workspace number 4
-	 $mod+Mod1+5 move container to workspace number 5
-	 $mod+Mod1+6 move container to workspace number 6
-	 $mod+Mod1+7 move container to workspace number 7
-	 $mod+Mod1+8 move container to workspace number 8
-	 $mod+Mod1+9 move container to workspace number 9
-	 $mod+Mod1+0 move container to workspace number 10
 	 Mod1+Tab workspace next
 	 Mod1+Shift+Tab workspace prev
 
@@ -176,12 +244,37 @@ bindsym {
 	 $mod+f fullscreen
 	# Tiling vs floating mode
 	 $mod+Shift+space floating toggle
-	 $mod+space focus mode_toggle
 	# Move focus to the parent container
-	 $mod+a focus parent
+	 #$mod+a focus parent
 
 	# Modes
-	 $mod+r mode "resize"
+	 $mod+a mode $mode_select
+}
+
+bindcode {
+	# Workspaces:
+	# Switch to workspace
+	 $mod+10 workspace number 1
+	 $mod+11 workspace number 2
+	 $mod+12 workspace number 3
+	 $mod+13 workspace number 4
+	 $mod+14 workspace number 5
+	 $mod+15 workspace number 6
+	 $mod+16 workspace number 7
+	 $mod+17 workspace number 8
+	 $mod+18 workspace number 9
+	 $mod+19 workspace number 10
+	# Move to workspace
+	 $mod+Shift+10 move container to workspace number 1
+	 $mod+Shift+11 move container to workspace number 2
+	 $mod+Shift+12 move container to workspace number 3
+	 $mod+Shift+13 move container to workspace number 4
+	 $mod+Shift+14 move container to workspace number 5
+	 $mod+Shift+15 move container to workspace number 6
+	 $mod+Shift+16 move container to workspace number 7
+	 $mod+Shift+17 move container to workspace number 8
+	 $mod+Shift+18 move container to workspace number 9
+	 $mod+Shift+19 move container to workspace number 10
 }
 
 # Floating mode
@@ -192,28 +285,36 @@ floating_modifier $mod normal
 	# Change normal to inverse to use left mouse button for resizing and right
 	# mouse button for dragging.
 
-# Resizing
-mode "resize" {
-bindsym {
-	 $left resize shrink width 10px
-	 $down resize grow height 10px
-	 $up resize shrink height 10px
-	 $right resize grow width 10px
-	# Ditto, with arrow keys
-	 Left resize shrink width 10px
-	 Down resize grow height 10px
-	 Up resize shrink height 10px
-	 Right resize grow width 10px
-	# Return to default mode
-	 Return mode "default"
-	 Escape mode "default"
-}
-}
 
 # Status Bar:
 #	Read `man 5 sway-bar` for more information about this section.
 bar {
 	swaybar_command waybar
+	#hidden_state hide
+	#position bottom
+	#mode hide
+	#modifier $mod
+	
+	#status_command i3status
+	#font JetBrains Mono Nerd Font 8.5
+
+	#mode dock
+	#status_command while ~/.config/sway/status.sh; do sleep 1; done
+	#colors {
+	#	# Text color of status bar
+	#	statusline #eaf0ff
+	#
+	#	# Background color of status bar
+	#	background #000000
+    #}
+	#font nerd: JetBrains Mono Nerd Font 12
+}
+
+bindgesture {
+	swipe:right workspace prev
+	swipe:left workspace next
+	swipe:up  fullscreen
+	swipe:down fullscreen
 }
 
 include /home/$usr/.config/sway/outputs
