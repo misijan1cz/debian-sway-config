@@ -11,21 +11,13 @@ username=$(id -u -n 1000)
 maindir=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 
-# Change to Debian Sid branch
-#cp /etc/apt/sources.list /etc/apt/sources.list.bak
-#cp $maindir/sources.list /etc/apt/sources.list
-
-
-# For the purposes of this script
-mkdir -p $maindir/builds
-
-# Copy dotfiles
-git clone https://github.com/misijan1cz/dotfiles
-bash dotfiles/install.sh
-
 # ---------------------------------------------
 #                 INSTALLATION
 # ---------------------------------------------
+
+
+# Change to Debian Sid branch
+#bash $maindir/scripts/debian_branch_sid.sh
 
 
 # Get all necessary packages
@@ -60,111 +52,26 @@ apt install -y opencl-headers ocl-icd-opencl-dev
 apt install -y intel-opencl-icd				#intel igpu opencl driver
 
 
-## Build Swaylock-effects
-#cd $maindir/builds
-#git clone https://github.com/mortie/swaylock-effects
-#cd swaylock-effects
-#meson setup build
-#ninja -C build
-#ninja -C build install
-##chmod a+s /usr/local/bin/swaylock # for system without PAM
-##cd $maindir
-
-
-# Get autotiling
-wget https://raw.githubusercontent.com/nwg-piotr/autotiling/master/autotiling/main.py
-mv main.py /usr/bin/autotiling
-chmod +x /usr/bin/autotiling
-
-
-# Build ly
-cd $maindir/builds
-git clone --recurse-submodules https://github.com/fairyglade/ly
-cd ly
-make
-make install installsystemd
-cd $maindir
-
-
-# Build sway-save-outputs
-cd $maindir/builds
-git clone https://github.com/nwg-piotr/sway-save-outputs
-cd sway-save-outputs
-bash install.sh
-cp sway_save_outputs /home/$username/.local/bin/sway_save_outputs
-#cd $maindir
-
-
-# Install tailscale
-curl -fsSL https://tailscale.com/install.sh | sh
-
-# Install ollama
-#curl -fsSL https://ollama.com/install.sh | sh
-
-
 # ---------------------------------------------
 #                CONFIGURATION
 # ---------------------------------------------
 
+# Copy dotfiles
+bash $maindir/scripts/my_dotfiles				# git (residual left on purpose)
 
-# Set interfaces as managed by NetworkManager
-mv /etc/NetworkManager/NetworkManager.conf /etc/NetworkManager/NetworkManager.conf.bak
-cp $maindir/NetworkManager.conf /etc/NetworkManager/NetworkManager.conf
-
-
-# Corect wpa_supplicant conflict previous session
-netiface=$(printf '%s\n' /sys/class/net/*/wireless | cut -d/ -f5)
-if [[ -n "$netiface" ]] &&  [[ "$(echo $netiface | wc -w)" -eq 1 ]]; then
-	cp $maindir/wpa_supplicant.conf /etc/wpa_supplicant.conf
-	echo -e "pre-up sudo wpa_supplicant -B -i$netiface -c/etc/wpa_supplicant.conf -Dnl80211 \npost-down sudo killall -q wpa_supplicant" >> /etc/network/interfaces
-	echo -e "\nDone configuring wpa_supplicant for use with NetworkManager.\n"
-else
-	echo -e "\nError: None or too many interfaces. Cannot configure wpa_supplicant.\n"
-fi
-
-
-# Enable services
-systemctl disable wpa_supplicant		# NetworkManager
-systemctl enable NetworkManager
-ufw enable					# firewall
-systemctl enable libvirtd 			# QEMU virtualization
-systemctl enable ly 				# ly - login screen ("animate" at /etc/ly/config.ini)
-systemctl disable getty@tty2.service
-systemctl enable tailscaled			# tailscale - already active, but whatever
-systemctl enable bluetooth			# bluetooth
-systemctl enable --now power-profiles-daemon 	# power profiles
-
-
-# Add user to groups
-usermod -a -G libvirt $username			# QEMU virtualization
-
-
-# Give user ownership of all dirs in home
-chown -R $username:$username /home/$username
-
-
-# Set power-saver profile
-powerprofilesctl set power-saver
-
-
-# Update fonts
-fc-cache -vf
-
-
-# Download eduroam config script
-curl 'https://cat.eduroam.org/user/API.php?action=downloadInstaller&lang=en&profile=1070&device=linux&generatedfor=user&openroaming=0' > /home/$username/eduroam-cuni.py
-
-
-# Set time zone
-timedatectl set-timezone Europe/Prague
-
-
-# Change target to GUI
-systemctl set-default graphical.target
-
+# Configure the rest
+bash $maindir/scripts/config_NetworkManager.sh	# (sudo)
+bash $maindir/scripts/config_systemd.sh			# ufw, powerprofiles, fc-cache (sudo)
+bash $maindir/scripts/get_tailscale.sh			# curl (sudo)
+bash $maindir/scripts/get_ly.sh					# make, git (sudo)
+bash $maindir/scripts/get_sway_save_outputs.sh	# git (UID)
+bash $maindir/scripts/get_autotiling.sh			# wget (sudo, py)
+bash $maindir/scripts/get_eduroam.sh			# curl (sudo, py)
+bash $maindir/scripts/get_ollama.sh				# curl
+#bash $maindir/scripts/get_swaylock_effects.sh	# meson, ninja, git
 
 # Cleanup
-rm -fr $maindir/builds
+rm -rf $maindir/builds
 bash $maindir/postinstall.sh
 
 echo "DONE"
