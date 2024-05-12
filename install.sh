@@ -13,12 +13,13 @@ maindir=$(dirname $0)
 
 # Change to Debian Sid branch
 #cp /etc/apt/sources.list /etc/apt/sources.list.bak
-#cp $maindir/configs/sources.list /etc/apt/sources.list
+#cp $maindir/dotfiles/configs/sources.list /etc/apt/sources.list
 
 
 # For the purposes of this script
 mkdir -p $maindir/builds
 
+git clone https://github.com/misijan1cz/dotfiles
 
 # Copy config files
 mkdir -p /home/$username/.config
@@ -28,10 +29,10 @@ mkdir -p /home/$username/Pictures
 mkdir -p /home/$username/Documents
 mkdir -p /home/$username/Music
 mkdir -p /home/$username/Videos
-cp -r $maindir/dotconfig/* /home/$username/.config/
-cp -r $maindir/dotlocal/* /home/$username/.local/
-cp -r $maindir/dotswaylock/* /home/$username/.swaylock/
-cp $maindir/configs/dotvimrc /home/$username/.vimrc
+cp -r $maindir/dotfiles/dotconfig/* /home/$username/.config/
+cp -r $maindir/dotfiles/dotlocal/* /home/$username/.local/
+cp -r $maindir/dotfiles/dotswaylock/* /home/$username/.swaylock/
+cp $maindir/dotfiles/configs/dotvimrc /home/$username/.vimrc
 
 
 # ---------------------------------------------
@@ -120,13 +121,13 @@ curl -fsSL https://ollama.com/install.sh | sh
 
 # Set interfaces as managed by NetworkManager
 mv /etc/NetworkManager/NetworkManager.conf /etc/NetworkManager/NetworkManager.conf.bak
-cp $maindir/configs/NetworkManager.conf /etc/NetworkManager/NetworkManager.conf
+cp $maindir/dotfiles/configs/NetworkManager.conf /etc/NetworkManager/NetworkManager.conf
 
 
 # Corect wpa_supplicant conflict previous session
 netiface=$(printf '%s\n' /sys/class/net/*/wireless | cut -d/ -f5)
 if [[ -n "$netiface" ]] &&  [[ "$(echo $netiface | wc -w)" -eq 1 ]]; then
-	cp $maindir/configs/wpa_supplicant.conf /etc/wpa_supplicant.conf
+	cp $maindir/dotfiles/configs/wpa_supplicant.conf /etc/wpa_supplicant.conf
 	echo -e "pre-up sudo wpa_supplicant -B -i$netiface -c/etc/wpa_supplicant.conf -Dnl80211 \npost-down sudo killall -q wpa_supplicant" >> /etc/network/interfaces
 	echo -e "\nDone configuring wpa_supplicant for use with NetworkManager.\n"
 else
