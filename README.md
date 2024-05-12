@@ -17,18 +17,13 @@ Last tested on **Debian unstable (trixie/sid)** on 21.10.2023.
 
 ## Reminder
 
-This repository is for my personal use but feel free to clone it.   
-Keyboard layout is cz (qwerty) by default. You can change it in `.config/sway/config` file.   
-CapsLock is used as compose key.   
-Keyboard shortcuts are set according to my personal needs.   
+This repository is for my personal use but feel free to clone it.
+Script *scripts/my_dotfiles.sh* pulls my personal dotfiles repo.
+  
 
-This repository only contains *dotfiles* and other files for quick post-install configuration on **Debian**.   
+This repository only contains scripts for quick post-install configuration on **Debian**.   
 This repository is **not a distribution**.
 
 ## Thanks
-
-For packages included in `.local/bin/`:
-- bluetuith: <https://github.com/darkhz/bluetuith>
-- sway-save-outputs: <https://github.com/nwg-piotr/sway-save-outputs>.
    
-For all other projects, that were used in `install.sh`.
+to the whole open-source community. It's amazing to have you around.
