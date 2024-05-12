@@ -8,7 +8,7 @@ fi
 
 
 username=$(id -u -n 1000)
-maindir=$(dirname $0)
+maindir=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 
 # Change to Debian Sid branch
