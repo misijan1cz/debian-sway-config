@@ -34,6 +34,11 @@ cp -r $maindir/dotswaylock/* /home/$username/.swaylock/
 cp $maindir/configs/dotvimrc /home/$username/.vimrc
 
 
+# ---------------------------------------------
+#                 INSTALLATION
+# ---------------------------------------------
+
+
 # Get all necessary packages
 apt update
 apt upgrade -y
@@ -59,6 +64,11 @@ apt install -y power-profiles-daemon 			# Power Profiles
 apt install -y virt-manager qemu-{utils,system-x86,system-gui} libspice-server1 # QEMU virtualisation
 apt install -y make gcc libpam0g-dev libxcb1-dev 	# ly greeter dependencies
 apt install -y python3-i3ipc				# sway-save-outputs runtime dependency
+
+#Project specific:
+## COMPASS WTSA
+apt install -y opencl-headers ocl-icd-opencl-dev
+apt install -y intel-opencl-icd				#intel igpu opencl driver
 
 
 ## Build Swaylock-effects
@@ -98,6 +108,14 @@ cp sway_save_outputs /home/$username/.local/bin/sway_save_outputs
 
 # Install tailscale
 curl -fsSL https://tailscale.com/install.sh | sh
+
+# Install ollama
+curl -fsSL https://ollama.com/install.sh | sh
+
+
+# ---------------------------------------------
+#                CONFIGURATION
+# ---------------------------------------------
 
 
 # Set interfaces as managed by NetworkManager
