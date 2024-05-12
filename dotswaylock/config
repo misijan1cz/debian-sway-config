@@ -1,5 +1,0 @@
-#swaylock-effects
-#file on path: ~/.swaylock/config
-
-color=000000
-image=$HOME/.config/wallpaper_lock.jpg
