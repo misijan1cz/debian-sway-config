@@ -25,5 +25,7 @@ This repository only contains scripts for quick post-install configuration on **
 This repository is **not a distribution**.
 
 ## Thanks
-   
-to the whole open-source community. It's amazing to have you around.
+
+- darkhz (bluetuith): https://github.com/darkhz/bluetuith
+- piotr (sway-save-outputs): https://github.com/nwg-piotr/sway-save-outputs.
+- open-source community. It's amazing to have you around.
