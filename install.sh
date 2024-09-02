@@ -28,7 +28,8 @@ apt install -y git gh curl wget imv firefox		# user-defined programs
 apt install -y build-essential vim git cscope libncurses-dev libssl-dev bison flex bc libelf-dev git-email # user-defined programs (dev)
 
 apt install -y xwayland sway{,bg,idle} waybar foot	# Sway
-apt install -y wofi mc grimshot thunar light wdisplays xdg-desktop-portal-wlr lm-sensors mako-notifier playerctl mate-polkit # preconfigured Sway tools (optional)
+apt install -y wmenu mc grimshot thunar light wdisplays xdg-desktop-portal-wlr lm-sensors mako-notifier playerctl mate-polkit # preconfigured Sway tools (optional)
+apt install -y nvim ripgrep				# neovim
 apt install -y python3-i3ipc 			# autotiling
 apt install -y fontconfig 				# additional fonts
 
